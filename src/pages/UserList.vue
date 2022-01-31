@@ -40,8 +40,12 @@ import DialogInfo from '../components/DialogInfo.vue'
       }
     },
     async mounted() {
-      await this.$store.dispatch('getUsersList');
-      this.users = this.$store.getters.getUsers;
+      try {
+        await this.$store.dispatch('getUsersList');
+        this.users = this.$store.getters.getUsers;
+      } catch (err) {
+        alert (err)
+      }
     },
     computed: {
 
