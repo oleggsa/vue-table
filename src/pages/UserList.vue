@@ -1,33 +1,5 @@
 <template>
-  <DialogInfo v-model:show="dialogVisible">
-    <div>
-      <h3>{{this.currentUser.name}}</h3>
-      <div class="user__info">
-        <br>
-        <p><b>nick:</b> {{this.currentUser.username}}</p>
-        <p><b>email:</b> {{this.currentUser.email}}</p>
-        <p><b>phone:</b> {{this.currentUser.phone}}</p>
-        <p><b>Site:</b> {{this.currentUser.website}}</p>
-        <p><b>Address:</b> 
-          <ul class="user__info-list">
-            <li>{{this.currentUser.address.street}}</li>
-            <li>{{this.currentUser.address.suite}}</li>
-            <li>{{this.currentUser.address.city}}</li>
-            <li>{{this.currentUser.address.zipcode}}</li>
-            <li><b>Geo:</b></li>
-            <li class="user__info-list" v-for="string in this.currentUser.address.geo" :key='string.id'>{{string}}</li>
-          </ul>
-        </p>
-        <p><b>Company:</b>
-          <ul class="user__info-list">
-            <li v-for="string in this.currentUser.company" :key='string.id'>
-              {{string}}
-            </li>
-          </ul>
-        </p>
-      </div>
-    </div>
-  </DialogInfo>
+  <DialogInfo v-model:show="dialogVisible" :currentUser='currentUser'></DialogInfo>
   <el-table :data="getUsers()" style="width: 100%" @keyup.esc="dialogVisible=false">
     <el-table-column prop="id" label="ID" sortable width='80px'/>
     <el-table-column prop="name" label="Name" sortable />
@@ -108,8 +80,5 @@ import DialogInfo from '../components/DialogInfo.vue'
 <style>
   li {
     list-style-type: none;
-  }
-  .user__info-list {
-    margin-left: 15px;
   }
 </style>
