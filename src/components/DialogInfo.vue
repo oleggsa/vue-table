@@ -1,5 +1,5 @@
 <template>
-    <div class="dialog" v-if="show" @click.stop="hideDialog" @click="console(Object.keys(currentUser[address]))">
+    <div class="dialog" v-if="show" @click.stop="hideDialog">
         <div @click.stop class="dialog__content">
             <div>
                 <h3>{{this.currentUser.name}}</h3>
