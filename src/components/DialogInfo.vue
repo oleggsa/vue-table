@@ -1,5 +1,5 @@
 <template>
-    <div class="dialog" v-if="show" @click.stop="hideDialog" @click="console(currentUser)">
+    <div class="dialog" v-if="show" @click.stop="hideDialog" @click="console(Object.keys(currentUser[address]))">
         <div @click.stop class="dialog__content">
             <div>
                 <h3>{{this.currentUser.name}}</h3>
@@ -52,6 +52,9 @@
         methods: {
             hideDialog() {
                 this.$emit('update:show', false)
+            },
+            console(item) {
+                console.log(item);
             }
         }
     }
