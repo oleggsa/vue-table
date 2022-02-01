@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Main from '../pages/Main'
-import UserList from '../pages/UserList'
-import About from '../pages/About'
+const Main = () => import('../pages/Main')
+const UserList = () => import('../pages/UserList')
+const About = () => import('../pages/About')
 
 const routes = [
     {
