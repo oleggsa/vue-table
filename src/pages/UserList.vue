@@ -1,6 +1,6 @@
 <template>
   <DialogInfo v-model:show="dialogVisible" :currentUser='currentUser'></DialogInfo>
-  <el-table :data="getUsers()" style="width: 100%" @keyup.esc="dialogVisible=false">
+  <el-table :data="getCurrentUsers()" style="width: 100%" @keyup.esc="dialogVisible=false">
     <el-table-column prop="id" label="ID" sortable width='80px'/>
     <el-table-column prop="name" label="Name" sortable />
     <el-table-column prop="username" label="Nikname" sortable />
@@ -26,6 +26,7 @@
 <script>
 import debounce from '../utils/debounce'
 import DialogInfo from '../components/DialogInfo.vue'
+import {mapGetters, mapActions, mapMutations} from 'vuex';
 
   export default {
     components: {
@@ -41,18 +42,31 @@ import DialogInfo from '../components/DialogInfo.vue'
     },
     async mounted() {
       try {
-        await this.$store.dispatch('getUsersList');
-        this.users = this.$store.getters.getUsers;
+        await this.getUsersList();
+        console.log(this.users);
+        this.users = this.getUsers;
+        console.log(this.users);
       } catch (err) {
         alert (err)
       }
     },
     computed: {
-
+      ...mapGetters([
+        'getUsers'
+      ]),
+      console(item) {
+        console.log(item);
+      }
     },
     methods: {
+      ...mapActions([
+        'getUsersList'
+      ]),
+      ...mapMutations([
+        'SET_USERS'
+      ]),
       findEmail(){
-        this.users = this.$store.getters.getUsers
+        this.users = this.getUsers
           .filter(user => user.email.toLowerCase()
           .includes(this.search.toLowerCase()));
           console.log(this.users);
@@ -62,7 +76,7 @@ import DialogInfo from '../components/DialogInfo.vue'
         if (!e.target.value) this.search = '';
         return this.findEmail()
         }, 500),
-      getUsers() {
+      getCurrentUsers() {
         return this.users;
       },
       handleInfo(index, row) {
@@ -73,8 +87,8 @@ import DialogInfo from '../components/DialogInfo.vue'
       },
       handleDelete(index, row) {
         this.users = this.users.filter(user => user.id !== row.id);
-        this.$store.commit('SET_USERS', this.users);
-        console.log(this.$store.getters.getUsers);
+        this.SET_USERS(this.users);
+        console.log(this.getUsers);
         console.log(index, row)
       }
     }
