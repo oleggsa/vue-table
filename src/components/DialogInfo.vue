@@ -9,7 +9,7 @@
                     <p><b>email:</b> {{this.currentUser.email}}</p>
                     <p><b>phone:</b> {{this.currentUser.phone}}</p>
                     <p><b>Site:</b> {{this.currentUser.website}}</p>
-                    <p><b>Address:</b> 
+                    <p><b>Address:</b></p>
                     <ul class="user__info-list">
                         <li>{{this.currentUser.address.street}}</li>
                         <li>{{this.currentUser.address.suite}}</li>
@@ -18,14 +18,12 @@
                         <li><b>Geo:</b></li>
                         <li class="user__info-list" v-for="string in this.currentUser.address.geo" :key='string.id'>{{string}}</li>
                     </ul>
-                    </p>
-                    <p><b>Company:</b>
+                    <p><b>Company:</b></p>
                     <ul class="user__info-list">
                         <li v-for="string in this.currentUser.company" :key='string.id'>
                         {{string}}
                         </li>
                     </ul>
-                    </p>
                 </div>
             </div>
         </div>

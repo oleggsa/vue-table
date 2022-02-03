@@ -2,13 +2,17 @@ import { createApp } from 'vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import App from './App.vue'
-import Vuex from 'vuex'
-import store from '@/store'
+import vuex from 'vuex'
+import store from './store'
 import router from './router/router'
 import debounce from './utils/debounce'
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title
+  next()
+})
 
 createApp(App)
-    .use(Vuex)
+    .use(vuex)
     .use(store)
     .use(ElementPlus)
     .use(router)
