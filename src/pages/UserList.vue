@@ -11,7 +11,10 @@
       </template>
       <template #default="scope">
         <el-button size="small" @click="handleInfo(scope.$index, scope.row)"
-          >Info</el-button>
+          >
+          <router-link :to="`/list/${scope.row.id}`">Info
+          </router-link>
+        </el-button>
         <el-button
           size="small"
           type="danger"
@@ -21,7 +24,7 @@
       </template>
     </el-table-column>
   </el-table>
-  <div ref='observer' class="observer"></div>
+  <div class="observer" @click="this.moreUsersList()">GET MORE USERS</div>
 </template>
 
 <script>
@@ -42,6 +45,7 @@ import {mapGetters, mapActions, mapMutations} from 'vuex';
       }
     },
     async mounted() {
+      this.$store.state.skip = 0;
 
       try {
         await this.getUsersList([this.$store.state.perPage, this.$store.state.skip]);
@@ -50,18 +54,18 @@ import {mapGetters, mapActions, mapMutations} from 'vuex';
       } catch (err) {
         alert (err)
       }
-      const options = {
-        rootMargin: '0px',
-        threshold: 1.0
-      }
-      const callback = (entries) => {
-          if (entries[0].isIntersecting && this.$store.state.skip <= 1000){
-            this.moreUsersList([this.$store.state.perPage, this.$store.state.skip])
-            console.log('asdasd');
-          }
-      };
-      const observer = new IntersectionObserver(callback, options);
-      observer.observe(this.$refs.observer);
+      // const options = {
+      //   rootMargin: '0px',
+      //   threshold: 1.0
+      // }
+      // const callback = (entries) => {
+      //     if (entries[0].isIntersecting && this.$store.state.skip <= 1000){
+      //       this.moreUsersList([this.$store.state.perPage, this.$store.state.skip])
+      //       console.log('asdasd');
+      //     }
+      // };
+      // const observer = new IntersectionObserver(callback, options);
+      // observer.observe(this.$refs.observer);
     },
     computed: {
       ...mapGetters([
@@ -125,7 +129,14 @@ import {mapGetters, mapActions, mapMutations} from 'vuex';
     list-style-type: none;
   }
   .observer {
-    height: 60px;
-    margin-bottom: 50px;
+    height: 30px;
+    margin: 50px 0;
+    text-align: center;
+    cursor: pointer;
+    color: #494e58;
+  }
+  a {
+    color: #9093a9;
+    text-decoration: none;
   }
 </style>
