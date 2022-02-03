@@ -1,6 +1,6 @@
 <template>
   <DialogInfo v-model:show="dialogVisible" :currentUser='currentUser'></DialogInfo>
-  <el-table :data="getCurrentUsers()" style="width: 100%" @keyup.esc="dialogVisible=false">
+  <el-table :data="users" style="width: 100%" @keyup.esc="dialogVisible=false">
     <el-table-column prop="id" label="ID" sortable width='80px'/>
     <el-table-column prop="name" label="Name" sortable />
     <el-table-column prop="username" label="Nikname" sortable />
@@ -21,6 +21,7 @@
       </template>
     </el-table-column>
   </el-table>
+  <div ref='observer' class="observer"></div>
 </template>
 
 <script>
@@ -41,18 +42,31 @@ import {mapGetters, mapActions, mapMutations} from 'vuex';
       }
     },
     async mounted() {
+
       try {
-        await this.getUsersList();
-        console.log(this.users);
+        await this.getUsersList([this.$store.state.perPage, this.$store.state.skip]);
         this.users = this.getUsers;
-        console.log(this.users);
+        this.$store.state.skip += 20;
       } catch (err) {
         alert (err)
       }
+      const options = {
+        rootMargin: '0px',
+        threshold: 1.0
+      }
+      const callback = (entries) => {
+          if (entries[0].isIntersecting && this.$store.state.skip <= 1000){
+            this.moreUsersList([this.$store.state.perPage, this.$store.state.skip])
+            console.log('asdasd');
+          }
+      };
+      const observer = new IntersectionObserver(callback, options);
+      observer.observe(this.$refs.observer);
     },
     computed: {
       ...mapGetters([
-        'getUsers'
+        'getUsers',
+        'getMoreUsers'
       ]),
       console(item) {
         console.log(item);
@@ -60,11 +74,22 @@ import {mapGetters, mapActions, mapMutations} from 'vuex';
     },
     methods: {
       ...mapActions([
-        'getUsersList'
+        'getUsersList',
+        'addUsersList'
       ]),
       ...mapMutations([
-        'SET_USERS'
+        'SET_USERS',
+        'ADD_USERS'
       ]),
+      async moreUsersList(){
+        try {
+          await this.addUsersList([this.$store.state.perPage, this.$store.state.skip]);
+          this.$store.state.skip += 20;
+          this.users = [...this.users, ...this.getMoreUsers];
+      } catch (err) {
+        alert (err)
+        }
+      },
       findEmail(){
         this.users = this.getUsers
           .filter(user => user.email.toLowerCase()
@@ -98,5 +123,9 @@ import {mapGetters, mapActions, mapMutations} from 'vuex';
 <style>
   li {
     list-style-type: none;
+  }
+  .observer {
+    height: 60px;
+    margin-bottom: 50px;
   }
 </style>

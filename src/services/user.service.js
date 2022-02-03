@@ -5,7 +5,7 @@ const baseUrl = process.env.VUE_APP_USERS_API
 console.log(baseUrl);
 
 export default {
-    usersList() {
-        return ApiClient.get(`${baseUrl}/users`)
+    usersList(perPage, skip) {
+        return ApiClient.get(`${baseUrl}/users?perPage=${perPage}&skip=${skip}`)
     }
 }
